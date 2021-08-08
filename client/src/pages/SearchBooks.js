@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
-import { saveBook, searchGoogleBooks } from '../utils/API';
+import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 import { SAVE_BOOK } from '../utils/mutations';
 
@@ -23,7 +23,7 @@ const SearchBooks = () => {
 	// create state to hold saved bookId values
 	const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
-	const [save_book, { error, data }] = useMutation(SAVE_BOOK);
+	const [saveBook, { error, data }] = useMutation(SAVE_BOOK);
 
 	// set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
 	// learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -75,13 +75,25 @@ const SearchBooks = () => {
 			return false;
 		}
 
+		console.log(Auth.getProfile());
 		try {
 			// const response = await saveBook(bookToSave, token);
-			const { data } = await save_book({
-				variables: bookToSave,
+			const { data } = await saveBook({
+				variables: {
+					bookToSave,
+					// {
+					// 	$authors: bookToSave.authors,
+					// 	$description: bookToSave.description,
+					// 	$bookId: bookToSave.bookId,
+					// 	$image: bookToSave.image,
+					// 	$link: bookToSave.image,
+					// 	$title: bookToSave.title,
+					// }
+					$username: Auth.getProfile().username,
+				},
 			});
 
-			Auth.login(data.addUser.token);
+			Auth.login(data.token);
 
 			// if book successfully saves to user's account, save book id to state
 			setSavedBookIds([...savedBookIds, bookToSave.bookId]);

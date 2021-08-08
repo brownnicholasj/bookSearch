@@ -11,16 +11,11 @@ const typeDefs = gql`
 
 	type Book {
 		bookId: String!
-		authors: Author
 		description: String!
 		title: String!
 		image: String
 		link: String
-	}
-
-	type Author {
-		_id: ID
-		books: [Book]!
+		authors: [String]
 	}
 
 	type Auth {
@@ -38,15 +33,22 @@ const typeDefs = gql`
 		login(email: String!, password: String!): Auth
 		addUser(username: String!, email: String!, password: String!): Auth
 		saveBook(
-			authors: String!
-			description: String!
-			bookId: String!
+			username: String
+			authors: [String]
+			description: String
+			bookId: String
 			image: String
 			link: String
-			title: String!
+			title: String
 		): User
 		removeBook(bookId: ID!): User
 	}
 `;
 
 module.exports = typeDefs;
+
+// type Author {
+// 	_id: ID
+// 	author: String
+// 	books: [Book]!
+// }
