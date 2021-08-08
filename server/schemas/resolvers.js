@@ -7,6 +7,12 @@ const resolvers = {
 		me: async () => {
 			return User.find({});
 		},
+		users: async () => {
+			return User.find({});
+		},
+		books: async () => {
+			return User.find({}).populate('books');
+		},
 	},
 	Mutation: {
 		login: async (parent, { email, password }) => {
@@ -24,7 +30,7 @@ const resolvers = {
 
 			const token = signToken(user);
 
-			return { token, user };
+			return { token };
 		},
 
 		addUser: async (parent, { username, email, password }) => {
