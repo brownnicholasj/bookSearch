@@ -81,12 +81,12 @@ const SearchBooks = () => {
 			// const response = await saveBook(bookToSave, token);
 			const { data } = await saveBook({
 				variables: {
-					id: Auth.getProfile().data._id,
 					input: bookToSave,
+					id: Auth.getProfile().data._id,
 				},
 			});
 
-			Auth.login(data.token);
+			// Auth.login(data.token);
 
 			// if book successfully saves to user's account, save book id to state
 			setSavedBookIds([...savedBookIds, bookToSave.bookId]);
