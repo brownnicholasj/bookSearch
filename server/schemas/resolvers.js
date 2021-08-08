@@ -43,32 +43,38 @@ const resolvers = {
 
 		saveBook: async (
 			parent,
-			[authors],
-			description,
-			bookId,
-			image,
-			link,
-			title,
+			{ authors, description, bookId, image, link, title },
 			context
 		) => {
-			if (context.user) {
-				const book = await Book.create({
-					authors,
-					description,
-					bookId,
-					image,
-					link,
-					title,
-				});
+			// if (context.user) {
+			// const book = await Book.create({
+			// 	authors,
+			// 	description,
+			// 	bookId,
+			// 	image,
+			// 	link,
+			// 	title,
+			// });
 
-				await User.findOneAndUpdate(
-					{ _id: context.user._id },
-					{ $addToSet: { savedBooks: book._id } }
-				);
+			await User.findOneAndUpdate(
+				{ id: context.user._id },
+				{
+					$addToSet: {
+						savedBooks: {
+							$authors: [authors],
+							$description: description,
+							$bookId: bookId,
+							$image: image,
+							$link: link,
+							$title: title,
+						},
+					},
+				}
+			);
 
-				return book;
-			}
-			throw new AuthenticationError('You need to be logged in!');
+			return book;
+			// }
+			// throw new AuthenticationError('You need to be logged in!');
 		},
 
 		removeBook: async (parent, bookId, context) => {

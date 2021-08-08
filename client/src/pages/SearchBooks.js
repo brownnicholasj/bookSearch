@@ -75,21 +75,14 @@ const SearchBooks = () => {
 			return false;
 		}
 
-		console.log(Auth.getProfile());
+		// console.log(Auth.getProfile().data._id);
+		// console.log(bookToSave);
 		try {
 			// const response = await saveBook(bookToSave, token);
 			const { data } = await saveBook({
 				variables: {
-					bookToSave,
-					// {
-					// 	$authors: bookToSave.authors,
-					// 	$description: bookToSave.description,
-					// 	$bookId: bookToSave.bookId,
-					// 	$image: bookToSave.image,
-					// 	$link: bookToSave.image,
-					// 	$title: bookToSave.title,
-					// }
-					$username: Auth.getProfile().username,
+					id: Auth.getProfile().data._id,
+					input: bookToSave,
 				},
 			});
 
