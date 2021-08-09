@@ -1,8 +1,8 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
-const secret = 'SUPER_SECRET';
-const expiration = '2h';
+const secret = process.env.TOKEN_SECRET;
+const expiration = process.env.TOKEN_EXP;
 
 module.exports = {
 	// function for our authenticated routes
@@ -26,7 +26,6 @@ module.exports = {
 		} catch {
 			console.log('Invalid token');
 		}
-		console.log(req.user);
 		// send to next endpoint
 		return req;
 	},
